@@ -3,14 +3,14 @@ import re
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 
-root_path = r""
+root_path = r"/Volumes/Windows/Users/mahas/Music/Plex Music"
 dest_path = r""
 
 if not root_path:
-    root_path = input("Enter the path to the music folder: ")
+    root_path = input("Enter the path to the music folder: ").strip()
 
 if not dest_path:
-    dest_path = input("Enter the path to the destination folder: ")
+    dest_path = input("Enter the path to the destination folder: ").strip()
 
 
 def list_files(root_path, files=[], endswith=".mp3"):
