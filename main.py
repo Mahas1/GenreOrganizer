@@ -34,7 +34,6 @@ genres = []
 
 regex_dictionary = {
     "Pop": r"(pop\b|(ping))|(alt\s|-z)|(\bglitch)",
-    "Rock": r"(rock\b)",
     "Dance": r"(dance\b)|(\bedm\b)|(\bdisco)|(step\b)",
     "Rap": r"(\brap)|(g-|\sfunk)",
     "R&B": r"(\br&b\b)|(blues)|(neo\ssoul)|(rythm)",
@@ -47,7 +46,7 @@ regex_dictionary = {
                     r"|(\bacoustic\b)|(\bpiano)|(\bguitar\b)",
     "Indie": r"(\bindie\b)",
     "Jazz": r"(jazz)|(sax)",
-    "Rock and Roll": r"(\brock-|\sand-|\sroll\b)",
+    "Rock": r"(\brock-|\sand-|\sroll\b)|(rock\b)",
     "Eurobeat": r"(\beurobeat)",
     "Classic": r"(\bclassic)|(mpb\b)|(\bcountry)|(carnatic)|(folk\b)",
     "Metal": r"(\bmetal)",
