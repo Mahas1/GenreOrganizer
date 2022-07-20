@@ -1,16 +1,19 @@
+import json
 import os
 import re
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 
-root_path = r"/Volumes/Windows/Users/mahas/Music/Plex Music"
-dest_path = r""
+with open("config.json") as f:
+    config = json.load(f)
+root_path = config.get("root_path", r"C:\Users\mahas\Music\Plex Music")
+dest_path = config.get("dest_path", r"C:\Users\mahas\Music\Music Genres")
 
 if not root_path:
-    root_path = input("Enter the path to the music folder: ").strip()
+    root_path = input("Enter the path to the music folder: ")
 
 if not dest_path:
-    dest_path = input("Enter the path to the destination folder: ").strip()
+    dest_path = input("Enter the path to the destination folder: ")
 
 
 def list_files(root_path, files=[], endswith=".mp3"):
@@ -31,7 +34,7 @@ genres = []
 
 regex_dictionary = {
     "Pop": r"(pop\b|(ping))|(alt\s|-z)|(\bglitch)",
-    "Rock": r"(\brock\b)",
+    "Rock": r"(rock\b)",
     "Dance": r"(dance\b)|(\bedm\b)|(\bdisco)|(step\b)",
     "Rap": r"(\brap)|(g-|\sfunk)",
     "R&B": r"(\br&b\b)|(blues)|(neo\ssoul)|(rythm)",
