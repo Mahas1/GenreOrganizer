@@ -6,8 +6,8 @@ from mutagen.mp3 import MP3
 
 with open("config.json") as f:
     config = json.load(f)
-root_path = config.get("root_path", r"C:\Users\mahas\Music\Plex Music")
-dest_path = config.get("dest_path", r"C:\Users\mahas\Music\Music Genres")
+root_path = config.get("root_path")
+dest_path = config.get("dest_path")
 
 if not root_path:
     root_path = input("Enter the path to the music folder: ")
