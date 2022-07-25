@@ -39,7 +39,7 @@ regex_dictionary = {
     "R&B": r"(\br&b\b)|(blues)|(neo\ssoul)|(rythm)",
     "Trap": r"(\btrap\b|(run))",
     "Japanese": r"(\banime\b)|(\bjapan)|(otacore)|(j-.+)",
-    "Electronic": r"(\bsynth)|(chill(synth)|(wave))|(\belectro)|(liquid\b)|(big\sroom)",
+    "Electronic": r"(\bsynth)|(chill(synth)|(wave))|(\belectro)|(liquid\b)|(big\sroom)|(\broom)",
     "Hip Hop": r"(\bhip\shop\b)",
     "Instrumental": r"(\binstrumental\b)|(\bbackground\b)|(\bsoundtrack\b)"
                     r"|(acoustic\b)|(video game music)|(vgm)|(\blo-|\sfi\b)"
