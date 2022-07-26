@@ -84,7 +84,7 @@ for genre in list(regex_dictionary.keys()) + ["Misc"]:
     file_map[genre] = open(os.path.join(dest_path, f"{genre}.m3u8"), "w", encoding="utf-8", newline="\n")
     file_map[genre].write("#EXTM3U\n")
     file_map[genre].write("#EXTENC:UTF-8\n")
-    file_map[genre].write(f"#PLAYLIST:{genre} By Mahasvan\n")
+    file_map[genre].write(f"#PLAYLIST:{genre} By Mahas1\n")
     file_map[genre].write(f"#EXTGENRE:{genre}\n\n")
 # genre categorization has been done
 
