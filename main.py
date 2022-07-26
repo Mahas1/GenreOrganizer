@@ -1,6 +1,7 @@
 import json
 import os
 import re
+
 from mutagen.easyid3 import EasyID3
 from mutagen.mp3 import MP3
 
@@ -33,23 +34,25 @@ files = list_files(root_path)
 genres = []
 
 regex_dictionary = {
-    "Pop": r"(pop\b|(ping))|(alt\s|-z)|(\bglitch)",
+    "Pop": r"(pop\b|(ping))|(alt\s|-z)|(\bglitch)|(indietronica)|(shonen)",
     "Dance": r"(dance\b)|(\bedm\b)|(\bdisco)|(step\b)",
     "Rap": r"(\brap)|(g-|\sfunk)",
-    "R&B": r"(\br&b\b)|(blues)|(neo\ssoul)|(rythm)",
-    "Trap": r"(\btrap\b|(run))",
+    "R&B": r"(\br&b\b)|(blues)|((\b|-)soul)|(rythm)",
+    "Trap": r"(\btrap\b|(run))|((\b|-)drill)",
     "Japanese": r"(\banime\b)|(\bjapan)|(otacore)|(j-.+)",
-    "Electronic": r"(\bsynth)|(chill(synth)|(wave))|(\belectro)|(liquid\b)|(big\sroom)|(\broom)",
+    "Electronic": r"(\bsynth)|(chill(synth)|(wave))|(\belectro)|(liquid\b)|(big\sroom)|(\broom)|(weirdcore)|(dubstep)|"
+                  r"(tronic)|(chicago)|(complextro)",
     "Hip Hop": r"(\bhip\shop\b)",
     "Instrumental": r"(\binstrumental\b)|(\bbackground\b)|(\bsoundtrack\b)"
-                    r"|(acoustic\b)|(video game music)|(vgm)|(\blo-|\sfi\b)"
-                    r"|(\bacoustic\b)|(\bpiano)|(\bguitar\b)",
-    "Indie": r"(\bindie\b)",
+                    r"|(acoustic\b)|(video game music)|(vgm)|(\blo(-|\s)?fi\b)"
+                    r"|(\bacoustic\b)|(\bpiano)|(\bguitar\b)|(scorecore)",
+    "Indie": r"(\bindie)",
     "Jazz": r"(jazz)|(sax)",
-    "Rock": r"(\brock-|\sand-|\sroll\b)|(rock\b)",
+    "Rock": r"(\brock(\b|-|\s))|(indietronica)|(shonen)",
     "Eurobeat": r"(\beurobeat)",
-    "Classic": r"(\bclassic)|(mpb\b)|(\bcountry)|(carnatic)|(folk\b)",
+    "Classic": r"(\bclassic)|(mpb\b)|(\bcountry)|(carnatic)|(folk\b)|(bhangra)",
     "Metal": r"(\bmetal)",
+    "Soundtracks": r"(score(\s|\b|(core)))|(filmi)|(movie(\b|-))|(.+wood)"
 }
 
 for file in files:
@@ -60,25 +63,31 @@ for file in files:
 
 genres = set(genres)
 genre_map = {}
+misc_genres = []
 
 for genre in genres:
-    matched = False
+    mainstreams = []
     for mainstream_genre in regex_dictionary:
         if re.findall(regex_dictionary[mainstream_genre], genre):
-            genre_map[genre] = mainstream_genre
-            matched = True
-    if not matched:
-        genre_map[genre] = "Misc"
+            mainstreams.append(mainstream_genre)
+            print(f"{genre} matches {mainstream_genre}")
+
+    if not mainstreams:
+        mainstreams = ["Misc"]
+        misc_genres.append(genre)
+
+    genre_map[genre] = mainstreams
 
 file_map = {}
-for genre in set(genre_map.values()):
+for genre in list(regex_dictionary.keys()) + ["Misc"]:
+    print(f"Generating file for: {genre}")
     file_map[genre] = open(os.path.join(dest_path, f"{genre}.m3u8"), "w", encoding="utf-8", newline="\n")
     file_map[genre].write("#EXTM3U\n")
     file_map[genre].write("#EXTENC:UTF-8\n")
     file_map[genre].write(f"#PLAYLIST:{genre} By Mahasvan\n")
     file_map[genre].write(f"#EXTGENRE:{genre}\n\n")
-
 # genre categorization has been done
+
 
 for file in files:
     tag = EasyID3(file)
@@ -86,12 +95,22 @@ for file in files:
     title = tag.get("title")[0]
     artist = tag.get("artist", "None")[0]
 
-    genre = tag.get("genre", ["Misc"])[0]
-    supergenre = genre_map.get(genre, "Misc")
-    file_obj = file_map.get(supergenre)
+    genre = tag.get("genre", ["misc"])[0]
+    supergenres = genre_map.get(genre, ["Misc"])
     print("Sorting:", title)
-    print("Found Genre:", supergenre)
-    file_obj.write(f"#EXTINF:{int(tag2.info.length)},{artist} - {title}\n"
-                   f"{file}\n\n")
-    file_obj.flush()
+    print("Genre:", genre)
+    for supergenre in supergenres:
+        print("Found Genre:", supergenre)
+        file_obj = file_map.get(supergenre)
+        if not file_obj:
+            print(f"File object for {title} not found")
+            continue
+        file_obj.write(f"#EXTINF:{int(tag2.info.length)},{artist} - {title}\n"
+                       f"{file}\n\n")
+        file_obj.flush()
     print()
+
+
+print("Misc genres")
+for i in misc_genres:
+    print("--|", i)
